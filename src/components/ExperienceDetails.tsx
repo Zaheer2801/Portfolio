@@ -24,7 +24,7 @@ export function ExperienceDetails() {
                             <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-white/20 bg-[#121212] flex-shrink-0 z-10 group-hover:border-emerald-400 transition-colors" />
                             <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-1.5rem)] p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/20 hover:bg-white/[0.04] transition-all ml-6 md:ml-0 md:mr-6 shadow-xl">
                                 <div className="flex flex-col gap-1 mb-2">
-                                    <span className="text-sm font-medium text-emerald-400">Master's in Information System</span>
+                                    <span className="text-sm font-medium text-emerald-400">Master&apos;s in Information System</span>
                                     <h3 className="text-xl font-bold text-white leading-tight">Auburn University at Montgomery, Alabama</h3>
                                 </div>
                                 <div className="flex justify-between items-center text-white/60 text-sm mt-4 pt-4 border-t border-white/10">
@@ -65,7 +65,7 @@ export function ExperienceDetails() {
 
                     <div className="p-8 rounded-3xl bg-white/[0.02] border border-white/10 flex flex-col gap-6">
                         <p className="text-white/70 leading-relaxed">
-                            I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.
+                            I&apos;m always open to discussing new projects, creative ideas or opportunities to be part of your visions.
                         </p>
 
                         <div className="flex gap-4">
@@ -92,22 +92,38 @@ export function ExperienceDetails() {
                         </div>
 
                         {/* Quick Contact Form */}
-                        <form className="mt-4 flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-                            <input
-                                type="text"
-                                placeholder="Name"
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-emerald-500/50 transition-colors"
-                                required
-                            />
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-emerald-500/50 transition-colors"
-                                required
-                            />
+                        <form
+                            target="_blank"
+                            action="https://formsubmit.co/zshaik2801@gmail.com"
+                            method="POST"
+                            className="mt-4 flex flex-col gap-4"
+                        >
+                            {/* FormSubmit Config */}
+                            <input type="hidden" name="_subject" value="New Portfolio Contact Submission!" />
+                            <input type="text" name="_honey" style={{ display: "none" }} />
+                            <input type="hidden" name="_captcha" value="false" />
+
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Full Name"
+                                    className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                                    required
+                                />
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email Address"
+                                    className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                                    required
+                                />
+                            </div>
+
                             <textarea
-                                placeholder="Your Message..."
-                                rows={4}
+                                name="message"
+                                placeholder="Your Message"
+                                rows={10}
                                 className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-emerald-500/50 transition-colors resize-none"
                                 required
                             />
@@ -115,7 +131,7 @@ export function ExperienceDetails() {
                                 type="submit"
                                 className="w-full bg-white text-black font-semibold rounded-xl py-3 mt-2 hover:bg-white/90 transition-colors focus:ring-2 focus:ring-white/20 outline-none"
                             >
-                                Send Message
+                                Submit Form
                             </button>
                         </form>
                     </div>
@@ -138,7 +154,7 @@ export function ExperienceDetails() {
                                 ProudCV AI Application
                             </h3>
                             <p className="text-white/70 text-lg leading-relaxed mix-blend-screen">
-                                Beyond supply chains and enterprise architecture, I'm actively building AI products. Check out my recently launched application that empowers job seekers with AI-driven resume enhancements.
+                                Beyond supply chains and enterprise architecture, I&apos;m actively building AI products. Check out my recently launched application that empowers job seekers with AI-driven resume enhancements.
                             </p>
                         </div>
                         <div className="w-full md:w-auto flex-shrink-0">

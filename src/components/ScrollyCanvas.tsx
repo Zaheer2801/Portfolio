@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import NextImage from "next/image";
 import { Overlay } from "./Overlay";
 
 const FRAME_COUNT = 90;
@@ -10,26 +11,26 @@ export function ScrollyCanvas() {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [images, setImages] = useState<HTMLImageElement[]>([]);
-    const [imagesLoaded, setImagesLoaded] = useState(false);
+    const [firstFrameLoaded, setFirstFrameLoaded] = useState(false);
 
     // Load images
     useEffect(() => {
         const loadedImages: HTMLImageElement[] = [];
-        let loadedCount = 0;
 
-        for (let i = 0; i < FRAME_COUNT; i++) {
+        // Load first frame specifically to trigger initial render fast
+        const firstImg = new Image();
+        firstImg.src = `/sequence/frame_00_delay-0.066s.png`;
+        firstImg.onload = () => {
+            setFirstFrameLoaded(true);
+        };
+        loadedImages.push(firstImg);
+
+        // Preload the rest of the sequence
+        for (let i = 1; i < FRAME_COUNT; i++) {
             const img = new Image();
-            // Format number to be two digits, e.g. 00, 01, ..., 89
+            // Format number to be two digits, e.g. 01, ..., 89
             const frameStr = i.toString().padStart(2, "0");
             img.src = `/sequence/frame_${frameStr}_delay-0.066s.png`;
-
-            img.onload = () => {
-                loadedCount++;
-                if (loadedCount === FRAME_COUNT) {
-                    setImagesLoaded(true);
-                }
-            };
-
             loadedImages.push(img);
         }
         setImages(loadedImages);
@@ -43,13 +44,16 @@ export function ScrollyCanvas() {
     const frameIndex = useTransform(scrollYProgress, [0, 1], [0, FRAME_COUNT - 1]);
 
     const drawImage = (index: number) => {
-        if (!imagesLoaded || !canvasRef.current || !images[index]) return;
+        if (!canvasRef.current || !images[index]) return;
+
+        const img = images[index];
+
+        // Ensure the image object has finished downloading before trying to draw
+        if (!img.complete || img.naturalHeight === 0) return;
 
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
-
-        const img = images[index];
 
         // Maintain aspect ratio while covering the canvas
         const hRatio = canvas.width / img.width;
@@ -92,14 +96,24 @@ export function ScrollyCanvas() {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [imagesLoaded, frameIndex]);
+    }, [firstFrameLoaded, frameIndex]);
 
     return (
         <div ref={containerRef} className="relative h-[200vh] bg-[#121212]">
-            <div className="sticky top-0 h-screen w-full overflow-hidden">
+            <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
+                {/* Next.js Optimized Image for instant First Contentful Paint (LCP) */}
+                <NextImage
+                    src="/sequence/frame_00_delay-0.066s.png"
+                    alt="Hero Background"
+                    fill
+                    priority
+                    className={`object-cover object-center transition-opacity duration-500 ${firstFrameLoaded ? 'opacity-0' : 'opacity-100'}`}
+                />
+
+                {/* Animation Canvas */}
                 <canvas
                     ref={canvasRef}
-                    className="absolute inset-0 w-full h-full z-0"
+                    className="absolute inset-0 w-full h-full z-10"
                 />
                 {/* Pass scrollYProgress to overlay for parallax text */}
                 <Overlay scrollProgress={scrollYProgress} />
